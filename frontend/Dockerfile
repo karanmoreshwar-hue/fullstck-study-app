@@ -1,6 +1,7 @@
 # Build Stage
 FROM node:18-alpine as build
 WORKDIR /app
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 COPY package*.json ./
 RUN npm install
 COPY . .
