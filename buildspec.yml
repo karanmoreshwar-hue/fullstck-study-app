@@ -19,6 +19,8 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
+      - docker tag $REPOSITORY_URI_BACKEND:latest $REPOSITORY_URI_BACKEND:latest
+      - docker tag $REPOSITORY_URI_FRONTEND:latest $REPOSITORY_URI_FRONTEND:latest
       - docker push $REPOSITORY_URI_BACKEND:latest
       - docker push $REPOSITORY_URI_FRONTEND:latest
       - echo Writing image definitions file...
