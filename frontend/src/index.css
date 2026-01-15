@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-premium-dark: #0f172a;
+  --color-premium-light: #f8fafc;
+  --color-accent-gold: #eca338;
+}
+
+body {
+  @apply bg-premium-dark text-premium-light antialiased;
+}

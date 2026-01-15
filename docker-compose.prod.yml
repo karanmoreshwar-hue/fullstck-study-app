@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/study-app-backend:latest
+    container_name: study-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./study_app.db:/app/study_app.db
+      - ./.env:/app/.env
+    environment:
+      - LLM_API_KEY=${LLM_API_KEY}
+    restart: always
+    networks:
+      - study-network
+
+  frontend:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/study-app-frontend:latest
+    container_name: study-frontend
+    ports:
+      - "80:80" # Standard HTTP port for production
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - study-network
+
+networks:
+  study-network:
+    driver: bridge

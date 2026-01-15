@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: study-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/study_app.db:/app/study_app.db # Persist DB
+      - ./backend/.env:/app/.env # Use env file
+    environment:
+      - LLM_API_KEY=${LLM_API_KEY} # Pass from shell if needed
+    networks:
+      - study-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: study-frontend
+    ports:
+      - "5173:80" # Map internal Nginx 80 to external 5173
+    depends_on:
+      - backend
+    networks:
+      - study-network
+
+networks:
+  study-network:
+    driver: bridge
