@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: study-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: study-backend
+  template:
+    metadata:
+      labels:
+        app: study-backend
+    spec:
+      containers:
+      - name: backend
+        image: 142039336022.dkr.ecr.us-east-1.amazonaws.com/study-app-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          value: "sqlite:////data/study_app.db"
+        - name: LLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: LLM_API_KEY
+        volumeMounts:
+        - name: storage
+          mountPath: /data
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: sqlite-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: study-backend
+spec:
+  selector:
+    app: study-backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: study-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: study-frontend
+  template:
+    metadata:
+      labels:
+        app: study-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 142039336022.dkr.ecr.us-east-1.amazonaws.com/study-app-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: study-frontend
+spec:
+  selector:
+    app: study-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
