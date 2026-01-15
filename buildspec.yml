@@ -13,14 +13,14 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker images...
-      - docker build -t $REPOSITORY_URI_BACKEND:latest ./backend
-      - docker build -t $REPOSITORY_URI_FRONTEND:latest ./frontend
+      - docker build -t backend:latest ./backend
+      - docker build -t frontend:latest ./frontend
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker tag $REPOSITORY_URI_BACKEND:latest $REPOSITORY_URI_BACKEND:latest
-      - docker tag $REPOSITORY_URI_FRONTEND:latest $REPOSITORY_URI_FRONTEND:latest
+      - docker tag backend:latest $REPOSITORY_URI_BACKEND:latest
+      - docker tag frontend:latest $REPOSITORY_URI_FRONTEND:latest
       - docker push $REPOSITORY_URI_BACKEND:latest
       - docker push $REPOSITORY_URI_FRONTEND:latest
       - echo Writing image definitions file...
